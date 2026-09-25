@@ -1,24 +1,16 @@
 {{define "footer"}}
 <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
-        <div class="footer-brand">
-            <span class="footer-logo">gopherit<span class="accent">.</span>dev</span>
-            <p class="footer-tagline">Designed &amp; built with Go</p>
-        </div>
-
-        <div class="footer-meta">
-            <p class="footer-line">
-                <span class="footer-badge">v{{.Version}}</span>
-                <span class="footer-separator">·</span>
-                <span>&copy; {{.Year}}</span>
-                <span class="footer-separator">·</span>
-                <a href="https://github.com/psiloconvalley/gopherit" target="_blank" rel="noopener noreferrer" class="footer-link">
-                    Source
-                    <span class="footer-icon">{{template "icon-external"}}</span>
-                </a>
-            </p>
-            <p class="footer-note">Served by a single Go binary</p>
-        </div>
+        <span>&copy; {{.Year}} <span class="footer-logo">gopherit<span class="accent">.</span>dev</span></span>
+        <span class="footer-separator">·</span>
+        <span class="footer-note">Served by a single Go binary</span>
+        <span class="footer-separator">·</span>
+        <a href="https://github.com/psiloconvalley/gopherit" target="_blank" rel="noopener noreferrer" class="footer-link">
+            Source
+            <span class="footer-icon">{{template "icon-external"}}</span>
+        </a>
+        <span class="footer-separator">·</span>
+        <span class="footer-badge">v{{.Version}}</span>
     </div>
 </footer>
 {{end}}

@@ -16,7 +16,7 @@ import (
 
 // version is injected at link time:
 // go build -ldflags="-X main.version=abc1234" ./cmd/server
-var version = "dev"
+var version = "1.0.0"
 
 func main() {
 	startTime := time.Now().UTC()
