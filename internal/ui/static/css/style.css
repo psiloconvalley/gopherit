@@ -302,7 +302,105 @@
     [data-theme="light"] .theme-icon-dark { display: none; }
     [data-theme="light"] .theme-icon-light { display: inline; }
 
-    /* ── Hero ───────────────────────────────────────── */
+   /* Nav Controls & Mobile Hamburger */
+    .nav-controls {
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+    }
+
+    .menu-toggle {
+        display: none;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        color: var(--text-primary);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        transition: background-color var(--transition-fast), color var(--transition-fast);
+        -webkit-appearance: none;
+        appearance: none;
+        padding: 0;
+    }
+
+    .menu-toggle:hover {
+        background: var(--accent-glow);
+        color: var(--accent);
+    }
+
+    .hamburger-box {
+        width: 20px;
+        height: 12px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .hamburger-inner {
+        position: absolute;
+        width: 14px;
+        height: 2px;
+        background-color: currentColor;
+        border-radius: 2px;
+        right: 0;
+        top: 2px;
+        transition: transform var(--transition-base), width var(--transition-base);
+    }
+
+    .hamburger-inner::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background-color: currentColor;
+        border-radius: 2px;
+        right: 0;
+        top: 8px;
+        transition: transform var(--transition-base), top var(--transition-base), width var(--transition-base);
+    }
+
+    /* Morph to elegant hardware 'X' */
+    .menu-toggle[aria-expanded="true"] .hamburger-inner {
+        width: 20px;
+        transform: translateY(3px) rotate(45deg);
+    }
+
+    .menu-toggle[aria-expanded="true"] .hamburger-inner::after {
+        width: 20px;
+        top: 2px;
+        transform: rotate(-90deg);
+    }
+Step 2: Redesign the Mobile Footer Layout in style.css
+Now let's scroll to the bottom responsive queries and update how the footer inner elements organize themselves on mobile viewports.
+
+While still inside Neovim, search for the mobile footer styles inside your query (type /footer-inner and press Enter to jump down).
+You will see this rule inside @media (max-width: 768px):
+
+CSS
+
+        .footer-inner {
+            font-size: 0.72rem;
+            line-height: 1.6;
+        }
+Replace that rule with this clean stacking and dot-removal configuration:
+
+CSS
+
+        .footer-inner {
+            font-size: 0.72rem;
+            line-height: 1.8;
+            flex-direction: column;
+            gap: 12px;
+            text-align: center;
+            align-items: center;
+        }
+
+        .footer-separator {
+            display: none;
+        }
+
     .hero {
         min-height: 100vh;
         min-height: 100dvh;
@@ -770,4 +868,87 @@
      height: 10px;
      stroke: currentColor;
  }
- 
+ }
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@layer utilities {
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: flex;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            right: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            flex-direction: column;
+            padding: var(--space-md) var(--space-md);
+            gap: var(--space-sm);
+            transform: translateY(-120%);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform var(--transition-base),
+                        opacity var(--transition-base);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-links a {
+            display: block;
+            font-size: 1rem;
+            padding: 8px 0;
+        }
+
+        .hero {
+            padding-top: calc(var(--nav-height) + var(--space-md));
+            min-height: auto;
+            padding-bottom: var(--space-xl);
+        }
+
+        .hero-visual {
+            display: none;
+        }
+
+        .section {
+            padding: var(--space-lg) var(--space-sm);
+        }
+
+        .projects-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-links {
+            grid-template-columns: 1fr;
+        }
+
+        .footer-inner {
+            font-size: 0.72rem;
+            line-height: 1.6;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-cta {
+            flex-direction: column;
+        }
+
+        .btn {
+            justify-content: center;
+            width: 100%;
+        }
+
+        .section-heading {
+            font-size: 1.25rem;
+        }
+    }
+}
