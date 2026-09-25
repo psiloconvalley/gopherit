@@ -16,8 +16,8 @@ RUN go mod download
 COPY . .
 
 # Fast Compile with BuildKit Cache Mounts
-RUN --mount=type=cache,target=/root/.cache/go-build \
-    --mount=type=cache,target=/go/pkg/mod \
+RUN --mount=type=cache,id=go-build,target=/root/.cache/go-build \
+    --mount=type=cache,id=go-mod,target=/go/pkg/mod \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build \
     -trimpath \
