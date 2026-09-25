@@ -13,7 +13,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build \
     -trimpath \
-    -ldflags="-s -w -X main.version=$(git rev-parse --short HEAD 2>/dev/null || echo 'production')" \
+    -ldflags="-s -w -X main.version=$(git rev-parse --short HEAD 2>/dev/null || echo '1.0.0')" \
     -o server \
     ./cmd/server
 
