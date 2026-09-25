@@ -4,7 +4,12 @@ The source code behind [gopherit.dev](https://gopherit.dev) — a high-performan
 
 [![Go Version](https://img.shields.io/badge/Go-1.23-00ADD8?style=flat&logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Uptime](https://img.shields.io/badge/Availability-100%25-brightgreen)](#)
+[![Performance](https://img.shields.io/badge/Lighthouse_Performance-100%25-success?logo=lighthouse&logoColor=fff)](#)
+[![Accessibility](https://img.shields.io/badge/Lighthouse_Accessibility-100%25-success?logo=lighthouse&logoColor=fff)](#)
+[![Best Practices](https://img.shields.io/badge/Lighthouse_Best_Practices-100%25-success?logo=lighthouse&logoColor=fff)](#)
+[![SEO](https://img.shields.io/badge/Lighthouse_SEO-100%25-success?logo=lighthouse&logoColor=fff)](#)
+
+
 
 ---
 
