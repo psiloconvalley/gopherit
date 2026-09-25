@@ -1,0 +1,22 @@
+{{define "nav"}}
+<header class="site-header" role="banner">
+    <nav class="nav" aria-label="Main navigation">
+        <a href="/" class="nav-logo" aria-label="Home">gopherit<span class="accent">.</span></a>
+        <ul class="nav-links">
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#work">Work</a></li>
+            <li><a href="/#projects">Projects</a></li>
+            <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <button
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Toggle dark and light theme"
+            title="Toggle theme"
+        >
+            <span class="theme-icon-dark" aria-hidden="true">☀</span>
+            <span class="theme-icon-light" aria-hidden="true">☾</span>
+        </button>
+    </nav>
+</header>
+{{end}}

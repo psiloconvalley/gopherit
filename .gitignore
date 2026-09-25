@@ -1,0 +1,15 @@
+# Binaries
+server
+*.exe
+*.dll
+*.so
+*.dylib
+
+# macOS junk
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

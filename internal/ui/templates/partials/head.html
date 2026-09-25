@@ -1,0 +1,23 @@
+{{define "head"}}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} — gopherit.dev</title>
+    <meta name="description" content="{{.Description}}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{.Title}} — gopherit.dev">
+    <meta property="og:description" content="{{.Description}}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gopherit.dev">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐹</text></svg>">
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+{{end}}
