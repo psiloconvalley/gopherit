@@ -81,7 +81,7 @@ func homeHandler(cache templateCache, logger *slog.Logger, version string) http.
 	return func(w http.ResponseWriter, r *http.Request) {
 		data := PageData{
 			Title:       "Home",
-			Description: "Backend developer focused on Go, clean architecture, and vanilla web technologies.",
+			Description: "DAVID - Backend developer focused on Go, clean architecture, and vanilla web technologies.",
 			Year:        time.Now().UTC().Year(),
 			Version:     version,
 		}
