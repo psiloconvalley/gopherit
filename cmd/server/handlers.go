@@ -78,7 +78,6 @@ func render(w http.ResponseWriter, logger *slog.Logger, status int, tmpl *templa
 	w.WriteHeader(status)
 	buf.WriteTo(w)
 }
-
 func homeHandler(cache templateCache, logger *slog.Logger, version string) http.HandlerFunc {
 	tmpl, exists := cache["pages/home.html"]
 	if !exists {
@@ -88,7 +87,7 @@ func homeHandler(cache templateCache, logger *slog.Logger, version string) http.
 	return func(w http.ResponseWriter, r *http.Request) {
 		data := PageData{
 			Title:       "Home",
-			Description: "DAVID - Backend developer focused on Go, clean architecture, and vanilla web technologies.",
+			Description: "DAVID - Backend developer focused on Go, clean architecture, systems engineering, and high-performance APIs.",
 			Year:        time.Now().UTC().Year(),
 			Version:     version,
 		}
