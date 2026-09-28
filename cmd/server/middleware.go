@@ -9,7 +9,6 @@ import (
 	"time"
 )
 
-// securityHeaders attaches defense-in-depth HTTP headers to every response.
 func securityHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
@@ -31,8 +30,6 @@ func securityHeaders(next http.Handler) http.Handler {
 	})
 }
 
-// statusRecorder wraps http.ResponseWriter to intercept the HTTP status code
-// for structured request logging.
 type statusRecorder struct {
 	http.ResponseWriter
 	status int
@@ -43,11 +40,8 @@ func (sr *statusRecorder) WriteHeader(code int) {
 	sr.ResponseWriter.WriteHeader(code)
 }
 
-// clientIP extracts the real client IP, accounting for reverse proxies
-// like Railway, Cloudflare, or Nginx.
 func clientIP(r *http.Request) string {
 	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
-		// X-Forwarded-For may be a comma-separated list; the first entry is the client.
 		parts := strings.Split(xff, ",")
 		ip := strings.TrimSpace(parts[0])
 		if ip != "" {
@@ -66,15 +60,13 @@ func clientIP(r *http.Request) string {
 	return host
 }
 
-// requestLogger logs every inbound request with method, path, status,
-// latency (in milliseconds), and client IP using slog.
 func requestLogger(logger *slog.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()
 			recorder := &statusRecorder{
 				ResponseWriter: w,
-				status:         http.StatusOK, // Default status if WriteHeader is not explicitly called
+				status:         http.StatusOK,
 			}
 
 			next.ServeHTTP(recorder, r)
@@ -91,8 +83,6 @@ func requestLogger(logger *slog.Logger) func(http.Handler) http.Handler {
 	}
 }
 
-// recovery intercepts panics anywhere downstream, logs the stack trace,
-// and returns a safe 500 Internal Server Error response.
 func recovery(logger *slog.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
