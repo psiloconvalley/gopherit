@@ -8,8 +8,6 @@ import (
 	"testing"
 )
 
-// nullLogger returns a logger that discards all log messages.
-// This keeps test outputs clean and readable.
 func nullLogger() *slog.Logger {
 	return slog.New(slog.NewTextHandler(io.Discard, nil))
 }
@@ -17,7 +15,6 @@ func nullLogger() *slog.Logger {
 func TestSecurityHeaders(t *testing.T) {
 	t.Parallel()
 
-	// A dummy next handler to verify the middleware passes requests through
 	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
@@ -44,7 +41,6 @@ func TestSecurityHeaders(t *testing.T) {
 		}
 	}
 
-	// Verify Content-Security-Policy exists and contains vital rules
 	csp := rec.Header().Get("Content-Security-Policy")
 	if csp == "" {
 		t.Error("expected Content-Security-Policy header, got empty string")
@@ -54,7 +50,6 @@ func TestSecurityHeaders(t *testing.T) {
 func TestRecovery(t *testing.T) {
 	t.Parallel()
 
-	// Handler designed intentionally to panic
 	panickingHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		panic("something went catastrophically wrong")
 	})
