@@ -1,44 +1,17 @@
 /* ── Custom Fonts ───────────────────────────────────── */
 @font-face {
-    font-family: 'Space Grotesk';
-    src: url('/static/fonts/SpaceGrotesk-Var.woff2') format('woff2-variations'),
-         url('/static/fonts/SpaceGrotesk-Var.woff2') format('woff2');
-    font-weight: 300 700;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Monaspace Radon';
-    src: url('/static/fonts/MonaspaceRadon-Var.woff2') format('woff2-variations'),
-         url('/static/fonts/MonaspaceRadon-Var.woff2') format('woff2');
-    font-weight: 200 900;
+    font-family: 'Urbanist';
+    src: url('/static/fonts/Urbanist-Var.woff2') format('woff2-variations'),
+         url('/static/fonts/Urbanist-Var.woff2') format('woff2');
+    font-weight: 300 800;
     font-style: normal;
     font-display: swap;
 }
 /* ── Cascade Layers ─────────────────────────────────── */
 @layer reset, base, layout, components, utilities;
 
-/* ── Custom Fonts ───────────────────────────────────── */
-@font-face {
-    font-family: 'Monaspace Krypton';
-    src: url('/static/fonts/MonaspaceKrypton-Var.woff2') format('woff2-variations'),
-         url('/static/fonts/MonaspaceKrypton-Var.woff2') format('woff2');
-    font-weight: 200 900;
-    font-stretch: 75% 125%;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Monaspace Radon';
-    src: url('/static/fonts/MonaspaceRadon-Var.woff2') format('woff2-variations'),
-         url('/static/fonts/MonaspaceRadon-Var.woff2') format('woff2');
-    font-weight: 200 900;
-    font-style: normal;
-    font-display: swap;
-}
-
+/* ── RESET ──────────────────────────────────────────── */
+@layer reset {
 /* ── RESET ──────────────────────────────────────────── */
 @layer reset {
     *, *::before, *::after {
@@ -98,10 +71,10 @@
         --space-lg: 4rem;
         --space-xl: 8rem;
 
-        /* Typography */
-        --font-sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        --font-mono: "SF Mono", "JetBrains Mono", monospace; 
-        /* Transitions */
+	/* Typography */
+	--font-sans: "Urbanist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        --font-mono: "SF Mono", "JetBrains Mono", monospace;
+	/* Transitions */
         --transition-fast: 150ms ease;
         --transition-base: 250ms ease;
         --transition-slow: 400ms ease;
@@ -214,7 +187,7 @@
     }
 
     .section-heading {
-        font-family: var(--font-mono);
+        font-family: var(--font-sans);
         font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
         color: var(--text-primary);
         margin-bottom: var(--space-lg);
@@ -266,7 +239,7 @@
     }
 
     .nav-logo {
-        font-family: var(--font-mono);
+        font-family: var(--font-sans);
         font-size: 1.25rem;
         font-weight: 700;
         color: var(--text-primary);
@@ -279,7 +252,7 @@
     }
 
     .nav-links a {
-        font-family: var(--font-mono);
+        font-family: var(--font-sans);
         font-size: 0.85rem;
         color: var(--text-secondary);
         position: relative;
@@ -518,7 +491,7 @@ CSS
         display: inline-flex;
         align-items: center;
         padding: 0.75rem 1.5rem;
-        font-family: var(--font-mono);
+        font-family: var(--font-sans);
         font-size: 0.9rem;
         border-radius: 6px;
         transition: all var(--transition-base);
@@ -569,8 +542,8 @@ CSS
         gap: var(--space-sm);
     }
 
-      .skill-item {
-        font-family: var(--font-mono);
+     .skill-item {
+        font-family: var(--font-sans);
         font-size: 0.85rem;
         padding: var(--space-sm) var(--space-md);
         border: 1px solid var(--border);
@@ -583,26 +556,34 @@ CSS
         transition: all var(--transition-base);
     }
 
-    .skill-icon {
+    .skill-item:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: var(--accent-glow);
+        transform: translateY(-2px);
+    }
+.skill-icon {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         width: 1.25rem;
         height: 1.25rem;
         flex-shrink: 0;
-        color: currentColor;
+        
+        /* Premium desaturation: blends in with dark theme until hovered */
+        filter: grayscale(100%) opacity(0.5);
+        transition: filter var(--transition-base), transform var(--transition-base);
     }
 
     .skill-icon svg {
         width: 100%;
         height: 100%;
     }
-   
-    .skill-item:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-        background: var(--accent-glow);
-        transform: translateY(-2px);
+
+    /* When the user hovers over a skill card, light it up to its exact official brand colors! */
+    .skill-item:hover .skill-icon {
+        filter: grayscale(0%) opacity(1) drop-shadow(0 0 6px rgba(255, 255, 255, 0.1));
+        transform: scale(1.1);
     }
 
     /* ── Projects ───────────────────────────────────── */
@@ -854,7 +835,7 @@ CSS
      align-items: center;
      gap: var(--space-sm);
      flex-wrap: wrap;
-     font-family: var(--font-mono);
+     font-family: var(--font-sans);
      font-size: 0.75rem;
      color: var(--text-secondary);
      line-height: 1.5;
