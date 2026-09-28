@@ -12,7 +12,24 @@ import (
 	"time"
 )
 
-// PageData represents the context injected into every template execution.
+var proverbs = []string{
+	"Don't communicate by sharing memory, share memory by communicating.",
+	"Concurrency is not parallelism.",
+	"Channels orchestrate; mutexes serialize.",
+	"The bigger the interface, the weaker the abstraction.",
+	"Make the zero value useful.",
+	"interface{} says nothing.",
+	"Gofmt's style is no one's favorite, yet gofmt is everyone's favorite.",
+	"A little copying is better than a little dependency.",
+	"Clear is better than clever.",
+	"Reflection is never clear.",
+	"Errors are values.",
+	"Don't just check errors, handle them gracefully.",
+	"Design the architecture, name the components, document the details.",
+	"Documentation is for users.",
+	"Don't panic.",
+}
+
 type PageData struct {
 	Title       string
 	Description string
@@ -20,11 +37,8 @@ type PageData struct {
 	Version     string
 }
 
-// templateCache holds pre-parsed template trees mapped by page name.
 type templateCache map[string]*template.Template
 
-// newTemplateCache parses base + partials + each page once at startup.
-// If any template has invalid syntax or a missing block, it fails immediately.
 func newTemplateCache(templatesFS fs.FS) (templateCache, error) {
 	cache := make(templateCache)
 
@@ -34,8 +48,6 @@ func newTemplateCache(templatesFS fs.FS) (templateCache, error) {
 	}
 
 	for _, page := range pages {
-		name := page
-
 		patterns := []string{
 			"base.html",
 			"partials/*.html",
@@ -44,23 +56,19 @@ func newTemplateCache(templatesFS fs.FS) (templateCache, error) {
 
 		tmpl, err := template.New("base").ParseFS(templatesFS, patterns...)
 		if err != nil {
-			return nil, fmt.Errorf("parsing template %q: %w", name, err)
+			return nil, fmt.Errorf("parsing template %q: %w", page, err)
 		}
 
-		cache[name] = tmpl
+		cache[page] = tmpl
 	}
 
 	return cache, nil
 }
 
-// render executes a template into a memory buffer first. If execution succeeds,
-// it writes the buffer to http.ResponseWriter with the correct status code.
-// If execution fails, it logs the error and sends a clean 500 without sending corrupted HTML.
 func render(w http.ResponseWriter, logger *slog.Logger, status int, tmpl *template.Template, data PageData) {
 	buf := new(bytes.Buffer)
 
-	err := tmpl.ExecuteTemplate(buf, "base", data)
-	if err != nil {
+	if err := tmpl.ExecuteTemplate(buf, "base", data); err != nil {
 		logger.Error("template execution failed", "error", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
@@ -71,7 +79,6 @@ func render(w http.ResponseWriter, logger *slog.Logger, status int, tmpl *templa
 	buf.WriteTo(w)
 }
 
-// homeHandler handles requests to the root index ("/").
 func homeHandler(cache templateCache, logger *slog.Logger, version string) http.HandlerFunc {
 	tmpl, exists := cache["pages/home.html"]
 	if !exists {
@@ -91,7 +98,6 @@ func homeHandler(cache templateCache, logger *slog.Logger, version string) http.
 	}
 }
 
-// notFoundHandler handles 404 routes.
 func notFoundHandler(cache templateCache, logger *slog.Logger, version string) http.HandlerFunc {
 	tmpl, exists := cache["pages/404.html"]
 	if !exists {
@@ -110,7 +116,6 @@ func notFoundHandler(cache templateCache, logger *slog.Logger, version string) h
 	}
 }
 
-// healthHandler provides an endpoint for Railway / uptime health checks.
 func healthHandler(version string, startTime time.Time) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response := map[string]any{
@@ -126,26 +131,7 @@ func healthHandler(version string, startTime time.Time) http.HandlerFunc {
 	}
 }
 
-// gopherHandler returns a random Go proverb as JSON.
 func gopherHandler(logger *slog.Logger) http.HandlerFunc {
-	proverbs := []string{
-		"Don't communicate by sharing memory, share memory by communicating.",
-		"Concurrency is not parallelism.",
-		"Channels orchestrate; mutexes serialize.",
-		"The bigger the interface, the weaker the abstraction.",
-		"Make the zero value useful.",
-		"interface{} says nothing.",
-		"Gofmt's style is no one's favorite, yet gofmt is everyone's favorite.",
-		"A little copying is better than a little dependency.",
-		"Clear is better than clever.",
-		"Reflection is never clear.",
-		"Errors are values.",
-		"Don't just check errors, handle them gracefully.",
-		"Design the architecture, name the components, document the details.",
-		"Documentation is for users.",
-		"Don't panic.",
-	}
-
 	return func(w http.ResponseWriter, r *http.Request) {
 		payload := map[string]string{
 			"proverb": proverbs[rand.IntN(len(proverbs))],
