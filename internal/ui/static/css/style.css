@@ -874,75 +874,43 @@ CSS
      color: var(--text-muted);
      opacity: 0.4;
  }
-.footer-note-metal {
-    font-family: var(--font-sans);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em; /* Premium wide-tracking */
-    text-transform: uppercase;
-    display: inline-block;
-    
-    /* Matte gunmetal / space-gray anodized gradient */
-    background: linear-gradient(
-        180deg, 
-        #cbd5e1 0%,   /* Soft matte silver top */
-        #64748b 55%,  /* Sleek charcoal middle */
-        #334155 100%  /* Dark slate bottom edge */
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    
-    /* Ultra-crisp, laser-etched debossed shadow */
-    filter: 
-        drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.95)) 
-        drop-shadow(0 1px 0.5px rgba(255, 255, 255, 0.07));
-    
+.footer-note-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem; /* Balanced tight gap */
+    white-space: nowrap; /* Force POWERED BY and the logo to stay on a single line */
     opacity: 0.85;
 }
-.footer-note-metal {
+
+.footer-note-text {
     font-family: var(--font-sans);
-    font-size: 0.68rem;
+    font-size: 0.65rem; /* Sleek, high-end smaller print */
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    display: inline-flex;
-    align-items: center; /* Vertically center the text and the inline SVG */
-    gap: 0.35rem;
-    
-    /* Matte gunmetal anodized gradient */
-    background: linear-gradient(
-        180deg, 
-        #cbd5e1 0%,   
-        #64748b 55%,  
-        #334155 100%  
-    );
+    background: linear-gradient(180deg, #cbd5e1 0%, #64748b 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     text-fill-color: transparent;
-    
     filter: 
         drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.95)) 
         drop-shadow(0 1px 0.5px rgba(255, 255, 255, 0.07));
-    
-    opacity: 0.85;
 }
 
 .footer-go-svg {
     display: inline-flex;
-    width: 28px; /* Proportional scaling to match the text height */
+    width: 30px; /* Mathematically scaled down to align beautifully with the text height */
     height: auto;
-    margin-top: -1px; /* Sub-pixel adjustment to sit on the baseline */
+    margin-top: -1.5px; /* Precision sub-pixel baseline alignment */
 }
 
 .footer-go-svg svg {
     width: 100%;
     height: auto;
-    fill: currentColor; /* Forces the Go Logo SVG to inherit the matte-silver gradient! */
+    display: block;
 }
-
+nvim internal/ui/static/css/style.css
 @keyframes metal-shimmer {
     0% {
         background-position: -200% center;
