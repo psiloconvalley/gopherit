@@ -559,28 +559,38 @@ CSS
         background: var(--bg-card);
         transition: all var(--transition-base);
     }
-
     .skill-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.03); /* Soft, subtle tech card inner background */
-        border: 1px solid var(--border);
+        width: 24px;  /* Standard size for tech stack icons */
+        height: 24px;
         flex-shrink: 0;
-        transition: all var(--transition-base);
+        color: var(--text-secondary); /* Silver-slate by default */
+        transition: color var(--transition-base), transform var(--transition-base);
     }
 
     .skill-icon svg {
-        width: 20px;  /* Proportional centered sizing */
-        height: 20px;
+        width: 100%;
+        height: 100%;
         display: block;
-        /* No color overrides here! Let the inline official brand colors display */
+        fill: currentColor !important; /* Force solid color fill */
+        stroke: none !important;       /* Block any outlines */
+        stroke-width: 0 !important;
     }
 
-    /* Premium interactive hover states matching your contact cards exactly */
+    .skill-item:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: var(--accent-glow);
+        transform: translateY(-2px);
+    }
+
+    .skill-item:hover .skill-icon {
+        color: var(--accent);
+        transform: scale(1.1);
+    }
+       /* Premium interactive hover states matching your contact cards exactly */
     .skill-item:hover {
         border-color: var(--accent);
         transform: translateY(-2px);
@@ -708,7 +718,6 @@ CSS
         box-shadow: 0 10px 25px -5px rgba(0, 173, 216, 0.2),
                     0 0 15px rgba(0, 173, 216, 0.1);
     }
-
     .contact-icon {
         display: flex;
         align-items: center;
@@ -717,7 +726,7 @@ CSS
         height: 44px;
         border-radius: 10px;
         background: var(--accent-glow);
-        color: var(--accent);
+        color: var(--accent); /* Clean glowing cyan */
         flex-shrink: 0;
         transition: background-color var(--transition-base),
                     color var(--transition-base),
@@ -727,15 +736,18 @@ CSS
     .contact-icon svg {
         width: 22px;
         height: 22px;
-        stroke: currentColor;
+        display: block;
+        fill: none;
+	stroke: currentColor; /* Restored: Clean outline stroke */
+        stroke-width: 1.75;
+
     }
 
     .contact-card:hover .contact-icon {
         background: var(--accent);
-        color: var(--bg-primary);
+        color: var(--bg-primary); /* Keeps original filled transition on hover */
         transform: scale(1.05);
     }
-
     .contact-info {
         display: flex;
         flex-direction: column;
