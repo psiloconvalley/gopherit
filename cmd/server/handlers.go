@@ -146,3 +146,20 @@ func gopherHandler(logger *slog.Logger) http.HandlerFunc {
 		}
 	}
 }
+// projectsAPIHandler serves your filtered, cached GitHub repositories as JSON.
+func projectsAPIHandler(cache *GitHubCache, logger *slog.Logger) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Fetch your repos safely using r.Context()
+		repos, err := cache.Get(r.Context(), "psiloconvalley")
+		if err != nil {
+			logger.Error("failed to load projects api", "error", err)
+			http.Error(w, "Failed to load projects", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Cache-Control", "public, max-age=300") // Cache locally in browser for 5 minutes
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(repos)
+	}
+}

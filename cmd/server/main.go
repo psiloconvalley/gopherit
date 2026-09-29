@@ -49,6 +49,9 @@ func main() {
 	}
 	logger.Info("template cache initialized")
 
+	// Initialize thread-safe GitHub Cache (1-hour TTL)
+	gitHubCache := NewGitHubCache(1*time.Hour, logger)
+
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(http.FS(staticFS))
@@ -58,6 +61,8 @@ func main() {
 	mux.HandleFunc("GET /healthz", healthHandler(version, startTime))
 	mux.HandleFunc("GET /api/gopher", gopherHandler(logger))
 	mux.HandleFunc("GET /", notFoundHandler(tmplCache, logger, version))
+	mux.HandleFunc("GET /api/projects", projectsAPIHandler(gitHubCache, logger))
+
 
 	var handler http.Handler = mux
 	handler = recovery(logger)(handler)

@@ -901,6 +901,47 @@ CSS
     
     opacity: 0.85;
 }
+.footer-note-metal {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center; /* Vertically center the text and the inline SVG */
+    gap: 0.35rem;
+    
+    /* Matte gunmetal anodized gradient */
+    background: linear-gradient(
+        180deg, 
+        #cbd5e1 0%,   
+        #64748b 55%,  
+        #334155 100%  
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    
+    filter: 
+        drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.95)) 
+        drop-shadow(0 1px 0.5px rgba(255, 255, 255, 0.07));
+    
+    opacity: 0.85;
+}
+
+.footer-go-svg {
+    display: inline-flex;
+    width: 28px; /* Proportional scaling to match the text height */
+    height: auto;
+    margin-top: -1px; /* Sub-pixel adjustment to sit on the baseline */
+}
+
+.footer-go-svg svg {
+    width: 100%;
+    height: auto;
+    fill: currentColor; /* Forces the Go Logo SVG to inherit the matte-silver gradient! */
+}
 
 @keyframes metal-shimmer {
     0% {

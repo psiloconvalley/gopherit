@@ -1,75 +1,86 @@
-// gopherit.dev — Minimal vanilla JS
-// No external dependencies. Strict mode.
-
-(() => {
-    "use strict";
-
-    // ── Theme Toggle ──────────────────────────────────
-    const toggle = document.getElementById("theme-toggle");
-    const html = document.documentElement;
-    const STORAGE_KEY = "gopherit-theme";
-
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-        html.setAttribute("data-theme", saved);
-    }
-
-    toggle?.addEventListener("click", () => {
-        const current = html.getAttribute("data-theme");
-        const next = current === "dark" ? "light" : "dark";
-        html.setAttribute("data-theme", next);
-        localStorage.setItem(STORAGE_KEY, next);
-    });
-
-    // ── Mobile Navigation Drawer ─────────────────────
-    const menuToggle = document.getElementById("menu-toggle");
-    const navLinks = document.getElementById("nav-links");
-    const body = document.body;
+document.addEventListener('DOMContentLoaded', () => {
+    // ── 1. Mobile Menu Toggle Handler ────────────────
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
 
     if (menuToggle && navLinks) {
-        const toggleMenu = (forceClose = false) => {
-            const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
-            const shouldOpen = forceClose ? false : !isOpen;
-
-            menuToggle.setAttribute("aria-expanded", shouldOpen.toString());
-            navLinks.classList.toggle("active", shouldOpen);
-            body.classList.toggle("menu-open", shouldOpen);
-        };
-
-        menuToggle.addEventListener("click", () => toggleMenu());
-
-        // Close menu when clicking any nav link
-        navLinks.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", () => toggleMenu(true));
-        });
-
-        // Close menu when clicking outside of the navigation bar
-        document.addEventListener("click", (e) => {
-            const isClickInside = navLinks.contains(e.target) || menuToggle.contains(e.target);
-            if (!isClickInside && navLinks.classList.contains("active")) {
-                toggleMenu(true);
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', !isExpanded);
+            navLinks.classList.toggle('active');
+            
+            // Toggle hamburger animation state
+            const icon = menuToggle.querySelector('.hamburger-inner');
+            if (icon) {
+                icon.classList.toggle('active');
             }
         });
     }
 
-    // ── Scroll Reveal ─────────────────────────────────
-    const reveals = document.querySelectorAll(".reveal");
+    // ── 2. GitHub Projects API Hydrator ──────────────
+    const projectsContainer = document.getElementById('github-projects');
 
-    if (reveals.length > 0 && "IntersectionObserver" in window) {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                        observer.unobserve(entry.target);
-                    }
+    if (projectsContainer) {
+        fetch('/api/projects')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(repos => {
+                if (!repos || repos.length === 0) {
+                    projectsContainer.innerHTML = '<p class="projects-empty">No public repositories found.</p>';
+                    return;
+                }
+
+                // Clear the loading message
+                projectsContainer.innerHTML = '';
+
+                // Loop through repositories and build high-end cards
+                repos.forEach((repo, index) => {
+                    const card = document.createElement('article');
+                    card.className = 'project-card reveal';
+                    
+                    // Format index with a leading zero (e.g., 01, 02)
+                    const displayIndex = String(index + 1).padStart(2, '0');
+                    
+                    // Fallback for empty descriptions
+                    const description = repo.description || 'No description provided. Click source to view codebase.';
+                    
+                    // Fallback for missing primary language
+                    const languageTag = repo.language ? `<span>${repo.language}</span>` : '';
+
+                    card.innerHTML = `
+                        <div class="project-header">
+                            <span class="project-number">${displayIndex}</span>
+                            <h3>${repo.name}</h3>
+                        </div>
+                        <p>${description}</p>
+                        <div class="project-tech">
+                            ${languageTag}
+                            <span>GitHub</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="${repo.html_URL}" target="_blank" rel="noopener noreferrer">
+                                Source ↗
+                            </a>
+                        </div>
+                    `;
+
+                    projectsContainer.appendChild(card);
                 });
-            },
-            { threshold: 0.15 }
-        );
-
-        reveals.forEach((el) => observer.observe(el));
-    } else {
-        reveals.forEach((el) => el.classList.add("visible"));
+            })
+            .catch(error => {
+                console.error('Failed to load GitHub projects:', error);
+                projectsContainer.innerHTML = `
+                    <div class="projects-error">
+                        <p>Failed to load projects directly from GitHub API.</p>
+                        <a href="https://github.com/psiloconvalley" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                            View on GitHub ↗
+                        </a>
+                    </div>
+                `;
+            });
     }
-})();
+});
