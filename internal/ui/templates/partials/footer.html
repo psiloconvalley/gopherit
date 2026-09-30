@@ -1,21 +1,32 @@
 {{define "footer"}}
-<footer class="site-footer" role="contentinfo">
+<footer class="site-footer">
     <div class="footer-inner">
-        <span>&copy; {{.Year}} <span class="footer-logo">gopherit<span class="accent">.</span>dev</span></span>
-        <span class="footer-separator">·</span>
-        
-        <span class="footer-note-container">
-            <span class="footer-note-text">POWERED BY</span>
-            <span class="footer-go-svg">{{template "icon-go"}}</span>
-        </span>
-        
-        <span class="footer-separator">·</span>
-        <a href="https://github.com/psiloconvalley/gopherit" target="_blank" rel="noopener noreferrer" class="footer-link">
-            Source
-            <span class="footer-icon">{{template "icon-external"}}</span>
-        </a>
-        <span class="footer-separator">·</span>
-        <span class="footer-badge">v{{.Version}}</span>
+        <!-- Line 1 on Mobile / Left Item on Desktop -->
+        <div class="footer-group footer-copyright">
+            &copy; 2026 gopherit.dev
+        </div>
+
+        <!-- Line 2 on Mobile / Centered Item on Desktop -->
+        <div class="footer-group footer-powered">
+            <div class="footer-note-container">
+                <span class="footer-note-text">Powered by</span>
+                <span class="footer-go-svg" aria-label="Go Programming Language">
+                    {{template "icon-go" .}}
+                </span>
+            </div>
+        </div>
+
+        <!-- Line 3 on Mobile / Right Item on Desktop -->
+        <div class="footer-group footer-source">
+            <span class="footer-version">v1.0.0</span>
+            <span class="footer-separator" aria-hidden="true">•</span>
+            <a href="https://github.com/yourusername/gopherit" target="_blank" rel="noopener noreferrer" class="footer-link">
+                Source
+                <span class="footer-icon">
+                    {{template "icon-external" .}}
+                </span>
+            </a>
+        </div>
     </div>
 </footer>
 {{end}}

@@ -9,9 +9,6 @@
 }
 /* ── Cascade Layers ─────────────────────────────────── */
 @layer reset, base, layout, components, utilities;
-
-/* ── RESET ──────────────────────────────────────────── */
-@layer reset {
 /* ── RESET ──────────────────────────────────────────── */
 @layer reset {
     *, *::before, *::after {
@@ -378,11 +375,7 @@
         top: 2px;
         transform: rotate(-90deg);
     }
-Step 2: Redesign the Mobile Footer Layout in style.css
-Now let's scroll to the bottom responsive queries and update how the footer inner elements organize themselves on mobile viewports.
 
-While still inside Neovim, search for the mobile footer styles inside your query (type /footer-inner and press Enter to jump down).
-You will see this rule inside @media (max-width: 768px):
 
 CSS
 
@@ -821,147 +814,128 @@ CSS
         font-size: 1.1rem;
         margin-bottom: var(--space-sm);
     }
-
-  
- /* ── Footer ─────────────────────────────────────── */
- .site-footer {
-     position: relative;
-     margin-top: var(--space-xl);
-     padding: var(--space-md) var(--space-md);
-     background: linear-gradient(180deg, var(--bg-primary) 0%, #0a0e17 100%);
-     border-top: 1px solid var(--border);
-     overflow: hidden;
- }
-
- /* Sleek metallic top border sheen */
- .site-footer::before {
-     content: "";
-     position: absolute;
-     top: 0;
-     left: 0;
-     right: 0;
-     height: 1px;
-     background: linear-gradient(90deg,
-         transparent 0%,
-         var(--accent) 30%,
-         #ffffff 50%,
-         var(--accent) 70%,
-         transparent 100%);
-     opacity: 0.6;
- }
-.footer-inner {
-     max-width: var(--max-width);
-     margin: 0 auto;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     gap: var(--space-sm);
-     flex-wrap: wrap;
-     font-family: var(--font-sans);
-     font-size: 0.75rem;
-     color: var(--text-secondary);
-     line-height: 1.5;
- }
-
- .footer-logo {
-     font-weight: 700;
-     letter-spacing: -0.02em;
-     color: var(--text-primary);
- }
-
- .footer-logo .accent {
-     color: var(--accent);
- }
-
- .footer-badge {
-     display: inline-flex;
-     align-items: center;
-     padding: 1px 6px;
-     background: var(--accent-glow);
-     color: var(--accent);
-     border: 1px solid rgba(0, 173, 216, 0.25);
-     border-radius: 4px;
-     font-size: 0.68rem;
-     font-weight: 600;
- }
-
- .footer-separator {
-     color: var(--text-muted);
-     opacity: 0.4;
- }
-.footer-note-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem; /* Balanced tight gap */
-    white-space: nowrap; /* Force POWERED BY and the logo to stay on a single line */
-    opacity: 0.85;
-}
-
-.footer-note-text {
-    font-family: var(--font-sans);
-    font-size: 0.65rem; /* Sleek, high-end smaller print */
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    background: linear-gradient(180deg, #cbd5e1 0%, #64748b 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    filter: 
-        drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.95)) 
-        drop-shadow(0 1px 0.5px rgba(255, 255, 255, 0.07));
-}
-
-.footer-go-svg {
-    display: inline-flex;
-    width: 30px; /* Mathematically scaled down to align beautifully with the text height */
-    height: auto;
-    margin-top: -1.5px; /* Precision sub-pixel baseline alignment */
-}
-
-.footer-go-svg svg {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-nvim internal/ui/static/css/style.css
-@keyframes metal-shimmer {
-    0% {
-        background-position: -200% center;
+/* ── Footer ─────────────────────────────────────── */
+@layer components {
+    .site-footer {
+        position: relative;
+        margin-top: var(--space-xl);
+        padding: var(--space-md) var(--space-sm);
+        background: linear-gradient(180deg, var(--bg-primary) 0%, #0a0e17 100%);
+        border-top: 1px solid var(--border);
+        overflow: hidden;
     }
-    100% {
-        background-position: 200% center;
+
+    /* Sleek metallic top border sheen */
+    .site-footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            var(--accent) 30%,
+            #ffffff 50%,
+            var(--accent) 70%,
+            transparent 100%);
+        opacity: 0.6;
+    }
+
+    /* Mobile-First: Vertical Stack of 3 Distinct Lines */
+    .footer-inner {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem; /* Balanced gap between lines on mobile */
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .footer-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+    }
+
+    /* Hide the bullet dot separator on mobile vertical stack */
+    .footer-separator {
+        display: none;
+    }
+
+    .footer-note-container {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        white-space: nowrap;
+        opacity: 0.85;
+    }
+
+    .footer-note-text {
+        font-family: var(--font-sans);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        background: linear-gradient(180deg, #cbd5e1 0%, #64748b 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-fill-color: transparent;
+        filter: 
+            drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.95)) 
+            drop-shadow(0 1px 0.5px rgba(255, 255, 255, 0.07));
+    }
+
+    .footer-go-svg {
+        display: inline-flex;
+        width: 30px;
+        height: auto;
+        margin-top: -1.5px;
+    }
+
+    .footer-go-svg svg {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .footer-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .footer-link:hover {
+        color: var(--accent-hover);
+        text-decoration: underline;
+    }
+
+    .footer-icon {
+        display: inline-flex;
+        align-items: center;
+        width: 10px;
+        height: 10px;
+    }
+
+    .footer-icon svg {
+        width: 100%;
+        height: 100%;
+        stroke: currentColor;
     }
 }
 
-
- .footer-link {
-     display: inline-flex;
-     align-items: center;
-     gap: 3px;
-     color: var(--accent);
-     text-decoration: none;
- }
-
- .footer-link:hover {
-     color: var(--accent-hover);
-     text-decoration: underline;
- }
-
- .footer-icon {
-     display: inline-flex;
-     align-items: center;
- }
-
- .footer-icon svg {
-     width: 10px;
-     height: 10px;
-     stroke: currentColor;
- }
- }
-
-/* ── RESPONSIVE ─────────────────────────────────────── */
+/* ── RESPONSIVE utilities ───────────────────────── */
 @layer utilities {
     @media (max-width: 768px) {
         .menu-toggle {
@@ -1021,10 +995,23 @@ nvim internal/ui/static/css/style.css
         .contact-links {
             grid-template-columns: 1fr;
         }
+    }
 
+    /* Desktop Viewport Alignment Shift */
+    @media (min-width: 769px) {
         .footer-inner {
-            font-size: 0.72rem;
-            line-height: 1.6;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            gap: 0 !important;
+            padding: 0 var(--space-md);
+        }
+
+        /* Show dot separator on desktop when flat on a single line */
+        .footer-separator {
+            display: inline-block;
+            margin: 0 0.25rem;
+            color: var(--text-muted);
+            opacity: 0.4;
         }
     }
 
