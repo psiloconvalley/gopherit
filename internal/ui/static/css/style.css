@@ -1028,10 +1028,4 @@
         }
     }
 }
-.theme-toggle {
-    position: relative;
-    z-index: 1000 !important; /* Force button above all nav overlaps */
-    cursor: pointer !important;
-    pointer-events: auto !important; /* Ensure clicks are active */
-    border: 2px solid red !important; /* Visual sanity check: should have a red box around it */
-}
+
