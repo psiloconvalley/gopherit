@@ -7,9 +7,11 @@
     font-style: normal;
     font-display: swap;
 }
+
 /* ── Cascade Layers ─────────────────────────────────── */
 @layer reset, base, layout, components, utilities;
-/* ── RESET ──────────────────────────────────────────── */
+
+/* ── RESET LAYER ────────────────────────────────────── */
 @layer reset {
     *, *::before, *::after {
         margin: 0;
@@ -53,7 +55,7 @@
     button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
-/* ── BASE ───────────────────────────────────────────── */
+/* ── BASE LAYER ─────────────────────────────────────── */
 @layer base {
     :root {
         /* Go Blue Accent */
@@ -68,10 +70,11 @@
         --space-lg: 4rem;
         --space-xl: 8rem;
 
-	/* Typography */
-	--font-sans: "Urbanist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        /* Typography */
+        --font-sans: "Urbanist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         --font-mono: "SF Mono", "JetBrains Mono", monospace;
-	/* Transitions */
+
+        /* Transitions */
         --transition-fast: 150ms ease;
         --transition-base: 250ms ease;
         --transition-slow: 400ms ease;
@@ -105,7 +108,7 @@
         --nav-bg: rgba(250, 250, 250, 0.85);
     }
 
-    /* Respect system preference when no toggle has been explicitly stored */
+    /* Respect system color-scheme when toggle is unset */
     @media (prefers-color-scheme: light) {
         html:not([data-theme="dark"]) {
             --bg-primary: #fafafa;
@@ -155,7 +158,7 @@
     }
 }
 
-/* ── LAYOUT ─────────────────────────────────────────── */
+/* ── LAYOUT LAYER ───────────────────────────────────── */
 @layer layout {
     .skip-link {
         position: absolute;
@@ -176,11 +179,10 @@
 
     .section {
         padding: var(--space-xl) var(--space-md);
+        position: relative;
+        z-index: 2; /* Sits cleanly above background elements */
     }
-    .section {
-    position: relative;
-    z-index: 2; /* Force sections to sit ABOVE background orbs / overlays */
-}
+
     .section-inner {
         max-width: var(--max-width);
         margin: 0 auto;
@@ -210,10 +212,10 @@
     }
 }
 
-/* ── COMPONENTS ─────────────────────────────────────── */
+/* ── COMPONENTS LAYER ─────────────────────────────────── */
 @layer components {
 
-    /* ── Navigation ─────────────────────────────────── */
+    /* ── Navigation Header ── */
     .site-header {
         position: fixed;
         top: 0;
@@ -281,7 +283,7 @@
         color: var(--accent);
     }
 
-    /* Theme Toggle */
+    /* ── Theme Switch Controller ── */
     .theme-toggle {
         width: 40px;
         height: 40px;
@@ -305,7 +307,7 @@
     [data-theme="light"] .theme-icon-dark { display: none; }
     [data-theme="light"] .theme-icon-light { display: inline; }
 
-   /* Nav Controls & Mobile Hamburger */
+    /* ── Nav Controls & Hamburgers ── */
     .nav-controls {
         display: flex;
         align-items: center;
@@ -364,7 +366,6 @@
         transition: transform var(--transition-base), top var(--transition-base), width var(--transition-base);
     }
 
-    /* Morph to elegant hardware 'X' */
     .menu-toggle[aria-expanded="true"] .hamburger-inner {
         width: 20px;
         transform: translateY(3px) rotate(45deg);
@@ -376,30 +377,7 @@
         transform: rotate(-90deg);
     }
 
-
-CSS
-
-        .footer-inner {
-            font-size: 0.72rem;
-            line-height: 1.6;
-        }
-Replace that rule with this clean stacking and dot-removal configuration:
-
-CSS
-
-        .footer-inner {
-            font-size: 0.72rem;
-            line-height: 1.8;
-            flex-direction: column;
-            gap: 12px;
-            text-align: center;
-            align-items: center;
-        }
-
-        .footer-separator {
-            display: none;
-        }
-
+    /* ── Hero Presentation ── */
     .hero {
         min-height: 100vh;
         min-height: 100dvh;
@@ -482,7 +460,7 @@ CSS
         opacity: 0.6;
     }
 
-    /* ── Buttons ────────────────────────────────────── */
+    /* ── Action Buttons ── */
     .btn {
         display: inline-flex;
         align-items: center;
@@ -517,7 +495,7 @@ CSS
         transform: translateY(-2px);
     }
 
-    /* ── About ──────────────────────────────────────── */
+    /* ── About Profile ── */
     .about-text {
         max-width: 650px;
     }
@@ -531,14 +509,14 @@ CSS
         margin-bottom: 0;
     }
 
-    /* ── Skills ─────────────────────────────────────── */
+    /* ── Interactive Skills Grid ── */
     .skills-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: var(--space-sm);
     }
 
-        .skill-item {
+    .skill-item {
         font-family: var(--font-sans);
         font-size: 0.9rem;
         font-weight: 600;
@@ -552,20 +530,20 @@ CSS
         background: var(--bg-card);
         transition: all var(--transition-base);
     }
-        .skill-icon {
+
+    .skill-icon {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 24px;  /* Standardized card size */
+        width: 24px;
         height: 24px;
         flex-shrink: 0;
         color: var(--text-secondary);
         transition: color var(--transition-base), transform var(--transition-base);
     }
 
-    /* Allows the horizontal yellow Go logo to scale beautifully in the grid */
     .skill-icon.logo-wide {
-        width: 40px; 
+        width: 40px;
         height: auto;
     }
 
@@ -574,32 +552,21 @@ CSS
         height: 100%;
         display: block;
     }
-   
+
     .skill-item:hover {
         border-color: var(--accent);
         color: var(--accent);
         background: var(--accent-glow);
         transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 173, 216, 0.1);
     }
 
     .skill-item:hover .skill-icon {
         color: var(--accent);
         transform: scale(1.1);
     }
-       /* Premium interactive hover states matching your contact cards exactly */
-    .skill-item:hover {
-        border-color: var(--accent);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 20px rgba(0, 173, 216, 0.1);
-    }
 
-    .skill-item:hover .skill-icon {
-        background: var(--accent-glow); /* Dynamic accent glow behind the brand icon on hover */
-        border-color: var(--accent);
-        transform: scale(1.05);
-    }
-         
-                  /* ── Projects ───────────────────────────────────── */
+    /* ── Project Cards ── */
     .projects-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -670,7 +637,8 @@ CSS
     .project-links a:hover {
         text-decoration: underline;
     }
-   /* ── Contact ────────────────────────────────────── */
+
+    /* ── Premium Contact Elements ── */
     .section-contact {
         text-align: left;
     }
@@ -682,13 +650,13 @@ CSS
         font-size: 1.05rem;
         line-height: 1.6;
     }
+
     .contact-links {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: var(--space-md);
         margin-top: var(--space-md);
-    } 
-   
+    }
 
     .contact-card {
         position: relative;
@@ -714,6 +682,7 @@ CSS
         box-shadow: 0 10px 25px -5px rgba(0, 173, 216, 0.2),
                     0 0 15px rgba(0, 173, 216, 0.1);
     }
+
     .contact-icon {
         display: flex;
         align-items: center;
@@ -722,7 +691,7 @@ CSS
         height: 44px;
         border-radius: 10px;
         background: var(--accent-glow);
-        color: var(--accent); /* Clean glowing cyan */
+        color: var(--accent);
         flex-shrink: 0;
         transition: background-color var(--transition-base),
                     color var(--transition-base),
@@ -734,16 +703,16 @@ CSS
         height: 22px;
         display: block;
         fill: none;
-	stroke: currentColor; /* Restored: Clean outline stroke */
+        stroke: currentColor;
         stroke-width: 1.75;
-
     }
 
     .contact-card:hover .contact-icon {
         background: var(--accent);
-        color: var(--bg-primary); /* Keeps original filled transition on hover */
+        color: var(--bg-primary);
         transform: scale(1.05);
     }
+
     .contact-info {
         display: flex;
         flex-direction: column;
@@ -763,7 +732,7 @@ CSS
         font-size: 0.8rem;
         color: var(--text-muted);
     }
-   
+
     .contact-arrow {
         display: flex;
         align-items: center;
@@ -789,7 +758,7 @@ CSS
         color: var(--accent);
     }
 
-    /* ── Error Page (404) ───────────────────────────── */
+    /* ── Error & Fallback pages ── */
     .error-page {
         display: flex;
         flex-direction: column;
@@ -814,8 +783,8 @@ CSS
         font-size: 1.1rem;
         margin-bottom: var(--space-sm);
     }
-/* ── Footer ─────────────────────────────────────── */
-@layer components {
+
+    /* ── High-Fidelity Site Footer ── */
     .site-footer {
         position: relative;
         margin-top: var(--space-xl);
@@ -825,7 +794,7 @@ CSS
         overflow: hidden;
     }
 
-    /* Sleek metallic top border sheen */
+    /* Metal top border sheen */
     .site-footer::before {
         content: "";
         position: absolute;
@@ -842,7 +811,7 @@ CSS
         opacity: 0.6;
     }
 
-    /* Mobile-First: Vertical Stack of 3 Distinct Lines */
+    /* Mobile Default Layout: Stacked Centered Columns */
     .footer-inner {
         max-width: var(--max-width);
         margin: 0 auto;
@@ -850,7 +819,7 @@ CSS
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 0.75rem; /* Balanced gap between lines on mobile */
+        gap: 0.75rem;
         font-family: var(--font-sans);
         font-size: 0.75rem;
         color: var(--text-secondary);
@@ -865,9 +834,8 @@ CSS
         gap: 0.35rem;
     }
 
-    /* Hide the bullet dot separator on mobile vertical stack */
     .footer-separator {
-        display: none;
+        display: none; /* Block separators are omitted on mobile stacks */
     }
 
     .footer-note-container {
@@ -933,9 +901,9 @@ CSS
         height: 100%;
         stroke: currentColor;
     }
-}
+} /* ── END COMPONENTS LAYER ─────────────────────────── */
 
-/* ── RESPONSIVE utilities ───────────────────────── */
+/* ── UTILITIES LAYER (RESPONSIVE OVERRIDES) ────────── */
 @layer utilities {
     @media (max-width: 768px) {
         .menu-toggle {
@@ -997,7 +965,7 @@ CSS
         }
     }
 
-    /* Desktop Viewport Alignment Shift */
+    /* Desktop Alignment and Split-Column Horizontal Spreads */
     @media (min-width: 769px) {
         .footer-inner {
             flex-direction: row !important;
@@ -1006,7 +974,22 @@ CSS
             padding: 0 var(--space-md);
         }
 
-        /* Show dot separator on desktop when flat on a single line */
+        /* 3-Column Mathematically Centered Split Layout */
+        .footer-copyright {
+            flex: 1;
+            justify-content: flex-start !important;
+        }
+
+        .footer-powered {
+            flex: 1;
+            justify-content: center !important;
+        }
+
+        .footer-source {
+            flex: 1;
+            justify-content: flex-end !important;
+        }
+
         .footer-separator {
             display: inline-block;
             margin: 0 0.25rem;
