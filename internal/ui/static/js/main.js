@@ -1,10 +1,43 @@
+/**
+ * gopherit.dev - Core Client Application Script
+ * 100% CSP ('self') Compliant
+ */
+
+// ── 0. Immediate Boot-Time Theme Initialization ─────────────────
+// Runs instantly when the script evaluates to prevent theme flashing
+(function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.setAttribute('data-theme', systemPrefersLight ? 'light' : 'dark');
+    }
+})();
+
+// ── DOM Interactive Lifecycle ──────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    // ── 1. Mobile Menu Toggle Handler ────────────────
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+
+    // ── 1. Theme Switcher (Global Event Delegation) ────────────
+    document.addEventListener('click', (e) => {
+        const themeBtn = e.target.closest('.theme-toggle, #theme-toggle');
+        if (themeBtn) {
+            e.preventDefault();
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+    });
+
+    // ── 2. Mobile Menu Toggle Handler ──────────────────────────
+    const menuToggle = document.querySelector('.menu-toggle, #menu-toggle');
+    const navLinks = document.querySelector('.nav-links, #nav-links');
 
     if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', () => {
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
             const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
             menuToggle.setAttribute('aria-expanded', !isExpanded);
             navLinks.classList.toggle('active');
@@ -15,9 +48,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon.classList.toggle('active');
             }
         });
+
+        // Close mobile drawer when a link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                navLinks.classList.remove('active');
+            });
+        });
     }
 
-    // ── 2. GitHub Projects API Hydrator ──────────────
+    // ── 3. GitHub Projects API Hydrator ────────────────────────
     const projectsContainer = document.getElementById('github-projects');
 
     if (projectsContainer) {
@@ -34,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // Clear the loading message
+                // Clear the loading skeleton/message
                 projectsContainer.innerHTML = '';
 
                 // Loop through repositories and build high-end cards
@@ -62,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span>GitHub</span>
                         </div>
                         <div class="project-links">
-                            <a href="${repo.html_URL}" target="_blank" rel="noopener noreferrer">
+                            <a href="${repo.html_url || repo.html_URL}" target="_blank" rel="noopener noreferrer">
                                 Source ↗
                             </a>
                         </div>
